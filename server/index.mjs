@@ -148,9 +148,10 @@ app.post('/api/scores', requireUser, (req, res) => {
   const score = req.body?.score;
   const treasureFound = req.body?.treasureFound;
 
-  // Treasure is +150 and skeleton is -50, so the max reachable score is 150.
-  // The range check allows negative values in case the lose rule is changed later.
-  if (!Number.isInteger(score) || score % 50 !== 0 || score < -150 || score > 150) {
+  // Treasure is +150 and skeleton is -80. Reachable scores are multiples of 10
+  // between -10 (skeleton, skeleton, treasure) and 150. The range check allows
+  // a little more room in case the scoring rules are changed later.
+  if (!Number.isInteger(score) || score % 10 !== 0 || score < -160 || score > 150) {
     return res.status(400).json({ error: '分數不合法' });
   }
   if (typeof treasureFound !== 'boolean') {
